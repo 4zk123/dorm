@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:mapper文件路径-->
+<mapper namespace="com.cduestc.dorm.Mapper.BackApplyMapper">
+    <select id="getListBackApply" resultType="com.cduestc.dorm.entity.BackApply">
+        select * from back_apply
+        <where>
+            <if test="college != null and college != ''">
+                college = #{college}
+            </if>
+        <if test="type != null">
+            and type = #{type}
+        </if>
+        <if test="studentId != null and studentId != ''">
+            and student_id = #{studentId}
+        </if>
+        <if test="studentName != null and studentName != ''">
+            and student_name = #{studentName}
+        </if>
+            <if test="status != null">
+            and status = #{status}
+            </if>
+        </where>
+        order by id desc
+        limit #{pageNum},#{pageSize}
+    </select>
+    <select id="getBackApplyTotal" resultType="int">
+        select count(*) from back_apply
+        <where>
+            <if test="college != null and college != ''">
+                college = #{college}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="studentId != null and studentId != ''">
+                and student_id = #{studentId}
+            </if>
+            <if test="studentName != null and studentName != ''">
+            and student_name = #{studentName}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+    <update id="updateBackApply">
+        update back_apply 
+        <set>
+            <if test="college != null and college != ''">
+                college = #{college}
+            </if>
+            <if test="type != null">
+                ,type = #{type}
+            </if>
+            <if test="studentId != null and studentId != ''">
+                ,student_id = #{studentId}
+            </if>
+            <if test="studentName != null and studentName != ''">
+                ,student_name = #{studentName}
+            </if>
+        <if test="outTime != null">
+           ,out_time = #{outTime}
+        </if>
+            <if test="backTime != null">
+                ,back_time = #{backTime}
+            </if>
+        <if test="stayPlace != null and stayPlace != ''">
+            ,stay_place = #{stayPlace}
+        </if>
+        <if test="stayStreet != null and stayStreet != ''">
+            ,stay_street = #{stayStreet}
+        </if>
+            <if test="emeName != null and emeName != ''">
+                ,eme_name = #{emeName}
+            </if>
+            <if test="emePhone != null and emePhone != ''">
+                ,eme_phone = #{emePhone}
+            </if>
+            <if test="building != null and building != ''">
+                ,building = #{building}
+            </if>
+            <if test="status != null">
+                ,status = #{status}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="delBatchBackApply" parameterType="list">
+        delete from back_apply where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

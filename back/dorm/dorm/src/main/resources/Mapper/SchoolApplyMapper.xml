@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:mapper文件路径-->
+<mapper namespace="com.cduestc.dorm.Mapper.SchoolApplyMapper">
+<select id="getListSchoolApply" resultType="com.cduestc.dorm.entity.SchoolApply">
+    select * from school_apply
+    <where>
+        <if test="studentId != null and studentId != ''">
+            student_id = #{studentId}
+        </if>
+        <if test="studentName != null and studentName != ''">
+            and student_name = #{student_name}
+        </if>
+        <if test="college != null and college != ''">
+            and college = #{college}
+        </if>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+    </where>
+    order by create_time desc
+    limit #{pageNum},#{pageSize}
+</select>
+<select id="countSchoolApply" resultType="int">
+    select count(*) from school_apply
+    <where>
+        <if test="studentId != null and studentId != ''">
+            student_id = #{studentId}
+        </if>
+        <if test="studentName != null and studentName != ''">
+            and student_name = #{student_name}
+        </if>
+        <if test="college != null and college != ''">
+            and college = #{college}
+        </if>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+    </where>
+</select>
+    <update id="updateSchoolApplyById">
+        update school_apply 
+        <set>
+            <if test="college != null and college != ''">
+                college = #{college}
+            </if>
+            <if test="outTime != null">
+                ,out_time = #{outTime}
+            </if>
+            <if test="livingRegion != null and livingRegion != ''">
+                ,living_region = #{livingRegion}
+            </if>
+            <if test="livingPlace != null and livingPlace != ''">
+                ,living_place= #{livingPlace}
+            </if>
+            <if test="emergencyConcat != null and emergencyConcat != ''">
+                ,emergency_concat = #{emergencyConcat}
+
+            </if>
+            <if test="emergencyConcatPhone != null and emergencyConcatPhone != ''">
+                ,emergency_concat_phone = #{emergencyConcatPhone}
+            </if>
+            <if test="status != null">
+                ,status = #{status}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="delBatchSchoolApply" parameterType="list">
+        delete from school_apply where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

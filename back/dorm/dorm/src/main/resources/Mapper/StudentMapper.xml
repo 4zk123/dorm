@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:mapper文件路径-->
+<mapper namespace="com.cduestc.dorm.Mapper.StudentMapper">
+    <select id="select" resultType="com.cduestc.dorm.entity.Student">
+        select s.id,s.name,s.college,s.subject,s.grade,s.sclass,s.gender,s.phone,s.dorm_id,d.building,d.room,d.bunk
+            from student as s left join bunk as d on  s.dorm_id = d.id
+        <where>
+            <if test="id != null and id != ''">
+                s.id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and s.name like concat('%',#{name},'%')
+            </if>
+            <if test="college != null and college != ''">
+                and s.college = #{college}
+            </if>
+            <if test="subject != null and subject != ''">
+                and s.subject = #{subject}
+            </if>
+            <if test="grade != null and grade != ''">
+                and s.grade = #{grade}
+            </if>
+            <if test="sclass != null and sclass != ''">
+                and s.sclass = #{sclass}
+            </if>
+            <if test="building != null and building != ''">
+                and d.building = #{building}
+            </if>
+            <if test="room  != null and room != ''">
+                and d.room = #{room}
+            </if>
+            <if test="bunk  != null and bunk != ''">
+                and d.bunk = #{bunk}
+            </if>
+        </where>
+        order by s.id desc
+        limit #{pageNum},#{pageSize}
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from student as s left join dorm as d on  s.dorm_id = d.id
+        <where>
+            <if test="id != null and id != ''">
+                and  s.id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and s.name like concat('%',#{name},'%')
+            </if>
+            <if test="college != null and college != ''">
+                and  s.college = #{college}
+            </if>
+            <if test="subject != null and subject != ''">
+                and s.subject = #{subject}
+            </if>
+            <if test="grade != null and grade != ''">
+                and  s.grade = #{grade}
+            </if>
+            <if test="sclass != null and sclass != ''">
+                and s.sclass = #{sclass}
+            </if>
+            <if test="building != null and building != ''">
+                and d.building = #{building}
+            </if>
+            <if test="room  != null and room != ''">
+                and d.room = #{room}
+            </if>
+            <if test="bunk  != null and bunk != ''">
+                and d.bunk = #{bunk}
+            </if>
+        </where>
+    </select>
+    <delete id="delBatch" parameterType="list">
+        delete from student where id in
+                            <foreach collection="ids" open="(" close=")" separator="," item="id">
+                                #{id}
+                            </foreach>
+    </delete>
+    <update id="updateById">
+        update student s,bunk d
+        <set>
+            <if test="name != null and name != ''">
+                 s.name = #{name},
+            </if>
+            <if test="pwd != null and pwd != ''">
+                s.pwd = #{pwd},
+            </if>
+            <if test="college != null and college != ''">
+                s.college = #{college},
+            </if>
+            <if test="subject != null and subject != ''">
+                 s.subject = #{subject},
+            </if>
+            <if test="grade != null and grade != ''">
+                s.grade = #{grade},
+            </if>
+            <if test="sclass != null and sclass != ''">
+                s.sclass = #{sclass},
+            </if>
+            <if test="gender != null and gender != ''">
+                s.gender = #{gender},
+            </if>
+            <if test="phone != null and phone != ''">
+                s.phone = #{phone},
+            </if>
+            <if test="building != null and building != ''">
+                 d.building = #{building},
+            </if>
+            <if test="room  != null and room != ''">
+                d.room = #{room},
+            </if>
+            <if test="bunk  != null and bunk != ''">
+                d.bunk = #{bunk}
+            </if>
+        </set>
+        <where>
+        <if test="id != null and id != ''">
+            s.id = #{id}
+        </if>
+        <if test="dormId != null and dormId != ''">
+            and d.id=#{dormId}
+        </if>
+        </where>
+    </update>
+    <select id="getStudentById" resultType="com.cduestc.dorm.entity.Student">
+        select s.id,s.name,s.college,s.subject,s.grade,s.sclass,s.gender,s.phone,s.dorm_id,d.building,d.room,d.bunk
+        from student as s left join bunk as d on  s.dorm_id = d.id where s.id = #{id}
+    </select>
+    <select id="export" resultType="com.cduestc.dorm.entity.Student">
+        select s.id,s.name,s.college,s.subject,s.grade,s.sclass,s.gender,s.phone,s.dorm_id,d.building,d.room,d.bunk
+        from student as s left join bunk as d on  s.dorm_id = d.id
+        <where>
+            <if test="id != null and id != ''">
+                s.id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and s.name like concat('%',#{name},'%')
+            </if>
+            <if test="college != null and college != ''">
+                and s.college = #{college}
+            </if>
+            <if test="subject != null and subject != ''">
+                and s.subject = #{subject}
+            </if>
+            <if test="grade != null and grade != ''">
+                and s.grade = #{grade}
+            </if>
+            <if test="sclass != null and sclass != ''">
+                and s.sclass = #{sclass}
+            </if>
+            <if test="building != null and building != ''">
+                and d.building = #{building}
+            </if>
+            <if test="room  != null and room != ''">
+                and d.room = #{room}
+            </if>
+            <if test="bunk  != null and bunk != ''">
+                and d.bunk = #{bunk}
+            </if>
+        </where>
+        order by s.id desc
+    </select>
+</mapper>

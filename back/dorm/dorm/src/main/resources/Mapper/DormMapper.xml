@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:mapper文件路径-->
+<mapper namespace="com.cduestc.dorm.Mapper.DormMapper">
+    <select id="search" resultType="com.cduestc.dorm.entity.Dorm" >
+        select d.id,d.building,d.room,d.bunk,s.name from dorm as d left join student as s  on d.student_id = s.id
+        <where>
+            <if test="building != null and building != ''">
+                d.building = #{building}
+            </if>
+            <if test="room != null and room != ''">
+                d.room = #{room}
+            </if>
+            <if test="bunk != null and bunk != ''">
+                d.bunk = #{bunk}
+            </if>
+        </where>
+        order by d.id asc
+        limit #{pageNum},#{pageSize}
+    </select>
+    <select id="count" resultType="int" >
+        select count(*) from dorm as d left join student as s  on d.student_id = s.id
+        <where>
+            <if test="building != null and building != ''">
+                d.building = #{building}
+            </if>
+            <if test="room != null and room != ''">
+                d.room = #{room}
+            </if>
+            <if test="bunk != null and bunk != ''">
+                d.bunk = #{bunk}
+            </if>
+        </where>
+    </select>
+    <select id="getListOfBuildingId" resultType="com.cduestc.dorm.entity.Building">
+        select * from building
+                           <where>
+                               <if test="building != null and building != ''">
+                                   building = #{building}
+                               </if>
+                           </where>
+                           order by id asc limit #{pageNum},#{pageSize}
+    </select>
+    <select id="countBuildingNum" resultType="int">
+        select count(*) from building
+        <where>
+            <if test="building != null and building != ''">
+                building = #{building}
+            </if>
+        </where>
+    </select>
+    <select id="getListOfRoom" resultType="com.cduestc.dorm.entity.Room">
+        select * from room
+            <where>
+                <if test="building != null and building != ''">
+                    building = #{building}
+                </if>
+                <if test="room != null and room != ''">
+                    and room = #{room}
+                </if>
+            </where>
+                 order by id asc
+                limit #{pageNum},#{pageSize}
+    </select>
+    <select id="countRoomNum" resultType="int">
+        select count(*) from room
+        <where>
+            <if test="building != null and building != ''">
+                building = #{building}
+            </if>
+            <if test="room != null and room != ''">
+                and room = #{room}
+            </if>
+        </where>
+    </select>
+    <delete id="delBatchBuilding" parameterType="list">
+        delete from building where building in
+        <foreach collection="delBuildings" open="(" close=")" separator="," item="building">
+            #{building}
+        </foreach>
+    </delete>
+    <select id="countBunkNum" resultType="com.cduestc.dorm.entity.Bunk">
+        select * from bunk
+        <where>
+            <if test="building != null and building != ''">
+                building= #{building}
+            </if>
+        <if test="room != null and room != ''">
+            and room =#{room}
+        </if>
+        </where>
+        order by id asc
+        limit #{pageNum},#{pageSize}
+    </select>
+    <select id="countBunkTotal" resultType="int">
+        select count(*) from bunk
+        <where>
+            <if test="building != null and building != ''">
+                building= #{building}
+            </if>
+            <if test="room != null and room != ''">
+                and room =#{room}
+            </if>
+        </where>
+    </select>
+    <delete id="delBatchBunk" parameterType="list">
+        delete from bunk where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

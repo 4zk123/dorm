@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:mapper文件路径-->
+<mapper namespace="com.cduestc.dorm.Mapper.OtherApplyMapper">
+    <select id="getListOtherApply" resultType="com.cduestc.dorm.entity.OtherApply">
+        select * from other_apply
+                    <where>
+                        <if test="status != null">
+                            status = #{status}
+                        </if>
+                        <if test="building != null and building != ''">
+                           and building = #{building}
+                        </if>
+                        <if test="studentId != null and studentId != ''">
+                            and student_id = #{studentId}
+                        </if>
+                        <if test="studentName != null and studentName != ''">
+                            and student_name = #{studentName}
+                        </if>
+                    </where>
+                     order by id desc
+                 limit #{pageNum},#{pageSize}
+    </select>
+    <select id="getListOtherApplyTotal" resultType="int">
+        select count(*) from other_apply
+        <where>
+            <if test="status != null">
+                status = #{status}
+            </if>
+            <if test="building != null and building != ''">
+                and building = #{building}
+            </if>
+            <if test="studentId != null and studentId != ''">
+                and student_id = #{studentId}
+            </if>
+            <if test="studentName != null and studentName != ''">
+                and student_name = #{studentName}
+            </if>
+        </where>
+    </select>
+    <update id="updateOtherApply">
+        update other_apply
+        <set>
+            <if test="studentId != null and studentId  != ''">
+                student_id = #{studentId}
+            </if>
+            <if test="studentName != null and studentName != ''">
+                ,student_name = #{studentName}
+            </if>
+            <if test="building != null and building != ''">
+                ,building = #{building}
+            </if>
+            <if test="room != null and room != ''">
+                ,room = #{room}
+            </if>
+            <if test="apply != null and apply != ''">
+                ,apply = #{apply}
+            </if>
+            <if test="status != null">
+                ,status = #{status}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="delBatchOtherApply" parameterType="list">
+        delete from other_apply where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

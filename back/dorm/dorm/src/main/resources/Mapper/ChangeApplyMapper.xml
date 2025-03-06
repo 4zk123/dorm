@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:mapper文件路径-->
+<mapper namespace="com.cduestc.dorm.Mapper.ChangeApplyMapper">
+    <update id="upChangeApply">
+        update change_apply 
+        <set>
+            <if test="studentName != null and studentName != ''">
+                student_name = #{studentName}
+            </if>
+            <if test="studentId != null and studentId != ''">
+                ,student_id = #{studentId}
+            </if>
+            <if test="college != null and college != ''">
+                ,college = #{college}
+            </if>
+            <if test="reason != null and reason != ''">
+                ,reason = #{reason}
+            </if>
+            <if test="type != null">
+                ,type = #{type}
+            </if>
+            <if test="building != null and building != ''">
+                ,building = #{building}
+            </if>
+            <if test="room != null and room != ''">
+                ,room = #{room}
+            </if>
+            <if test="bunk != null">
+                ,bunk = #{bunk}
+            </if>
+            <if test="exBuilding != null and exBuilding != ''">
+                ,exBuilding = #{exBuilding}
+            </if>
+            <if test="exRoom != null and exRoom != ''">
+                ,ex_room = #{exRoom}
+            </if>
+            <if test="exBunk != null and exBunk != ''">
+                ,ex_bunk = #{exBunk}
+            </if>
+            <if test="exId != null and exId != ''">
+                ,ex_id = #{exId}
+            </if>
+            <if test="exName != null and exName != ''">
+                ,ex_name = #{exName}
+            </if>
+            <if test="status != null">
+                ,status = #{status}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="getListChangeApply" resultType="com.cduestc.dorm.entity.ChangeApply">
+        select * from change_apply
+        <where>
+            <if test="studentName != null and studentName != ''">
+                student_name = #{studentName}
+            </if>
+            <if test="studentId != null and studentId != ''">
+                and student_id = #{studentId}
+            </if>
+            <if test="college != null and college != ''">
+                and college = #{college}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+        </where>
+        order by id desc
+        limit #{pageNum},#{pageSize}
+    </select>
+    <select id="getTotalChangeApply" resultType="int">
+        select count(*) from change_apply
+        <where>
+            <if test="studentName != null and studentName != ''">
+                student_name = #{studentName}
+            </if>
+            <if test="studentId != null and studentId != ''">
+                and student_id = #{studentId}
+            </if>
+            <if test="college != null and college != ''">
+                and college = #{college}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+        </where>
+    </select>
+    <delete id="delBatchChangeApply" parameterType="list">
+        delete from change_apply where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:mapper文件路径-->
+<mapper namespace="com.cduestc.dorm.Mapper.AfficheMapper">
+    <select id="search" resultType="com.cduestc.dorm.entity.Affiche">
+        select * from affiche
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+            <if test="writeName != null and writeName != ''">
+                and write_name = #{writeName}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+<!--            <if test="writeTime != null">-->
+<!--               and write_time = #{writeTime}-->
+<!--            </if>-->
+        </where>
+        order by write_time desc
+        limit #{pageNum},#{pageSize}
+    </select>
+    <select id="total" resultType="int">
+        select count(*) from affiche
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+            <if test="writeName != null and writeName != ''">
+                and write_name = #{writeName}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+<!--            <if test="writeTime != null">-->
+<!--                write_time = #{writeTime}-->
+<!--            </if>-->
+        </where>
+    </select>
+    <update id="updateById">
+        update affiche 
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="text != null and text != ''">
+                text = #{text},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+<!--            <if test="writeName != null and writeName != ''">-->
+<!--                write_name = #{writeName}-->
+<!--            </if>-->
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="delBatch" parameterType="list">
+    delete from affiche where id in
+    <foreach collection="ids" open="(" close=")" separator="," item="id">
+        #{id}
+    </foreach>
+    </delete>
+</mapper>

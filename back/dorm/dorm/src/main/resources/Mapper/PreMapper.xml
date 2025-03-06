@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:mapper文件路径-->
+<mapper namespace="com.cduestc.dorm.Mapper.PreMapper">
+    <insert id="take" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List">
+        insert into dorm(building,room,gender,college,start_time,end_time) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            <if test="item != null">
+                (#{item.building},#{item.room},#{item.gender},#{item.college},#{item.startTime},#{item.endTime})
+            </if>
+        </foreach>
+    </insert>
+    <select id="getListPre" resultType="com.cduestc.dorm.entity.PreDorms">
+        select distinct building,college,start_time,end_time from dorm
+        <where>
+            <if test="building != null and building != ''">
+                building = #{building}
+            </if>
+            <if test="college != null and college!= ''">
+                and college = #{college}
+            </if>
+        </where>
+        order by start_time asc
+        limit #{pageNum},#{pageSize}
+    </select>
+    <select id="total" resultType="int">
+        select count(distinct building,college,start_time,end_time) from dorm
+        <where>
+            <if test="building != null and building != ''">
+                building = #{building}
+            </if>
+            <if test="college != null and college!= ''">
+                and college = #{college}
+            </if>
+        </where>
+    </select>
+</mapper>

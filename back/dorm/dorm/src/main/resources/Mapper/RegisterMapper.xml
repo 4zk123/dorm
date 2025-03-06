@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:mapper文件路径-->
+<mapper namespace="com.cduestc.dorm.Mapper.RegisterMapper">
+    <select id="search" resultType="com.cduestc.dorm.entity.Register">
+        select * from register 
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="unit != null and unit != ''">
+                and unit = #{unit}
+            </if>
+            <if test="matter != null and matter != ''">
+                and matter = #{matter}
+            </if>
+            <if test="building != null and building != ''">
+                and building = #{building}
+            </if>
+            <if test="room != null and room != ''">
+                and room = #{room}
+            </if>
+<!--            <if test="arriveTime != null and arriveTime != ''">-->
+<!--                and arrive_time = #{arriveTime}-->
+<!--            </if>-->
+        </where>
+        order by id desc
+        limit #{pageNum},#{pageSize}
+    </select>
+    <select id="count" resultType="int">
+        select count(*) from register
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="unit != null and unit != ''">
+                and unit = #{unit}
+            </if>
+            <if test="matter != null and matter != ''">
+                and matter = #{matter}
+            </if>
+            <if test="building != null and building != ''">
+                and building = #{building}
+            </if>
+            <if test="room != null and room != ''">
+                and room = #{room}
+            </if>
+<!--            <if test="arriveTime != null and arriveTime != ''">-->
+<!--                and arrive_time = #{arriveTime}-->
+<!--            </if>-->
+        </where>
+    </select>
+    <update id="updateRegisterById">
+        update register 
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name}
+            </if>
+            <if test="phone != null and phone != ''">
+                ,phone = #{phone}
+            </if>
+            <if test="building != null and building != ''">
+                ,building = #{building}
+            </if>
+            <if test="room != null and room != ''">
+                ,room = #{room}
+            </if>
+            <if test="unit != null and unit != ''">
+                ,unit = #{unit}
+            </if>
+            <if test="matter != null and matter != ''">
+                ,matter = #{matter}
+            </if>
+            <if test="leaveTime != null">
+                ,leave_time = #{leaveTime}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="delBatch" parameterType="list">
+        delete from register where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
